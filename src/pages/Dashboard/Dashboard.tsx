@@ -39,14 +39,14 @@ function Dashboard() {
 
   const formSchema = z.object({
     idInputEjemplo1: z.string().optional(),
-    idInputEjemplo2: z.string().optional(),
+    idInputEjemplo2: z.date().optional(),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       idInputEjemplo1: "Ejemplo 1",
-      idInputEjemplo2: "",
+      /* idInputEjemplo2: new Date(), */
     },
   })
 
@@ -58,13 +58,13 @@ function Dashboard() {
       <div className="flex gap-2 w-full px-1">
         <Form {...form}>
           <InputText form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} binding />
-          <InputPassword form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding />
+          {/* <InputPassword form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputSingleSelect form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} data={gDatosRamas1} placeholder="-- Seleccione --" binding /> */}
           {/* <InputEmail form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputMultiFile form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputMultiSelect form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} data={gDatosRamas1} binding /> */}
           {/* <InputNumber form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
-          {/* <InputPicker form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
+          <InputPicker form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} type="single" format="yyyy-mm-dd" binding />
           {/* <InputSingleFile form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputTextArea form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
         </Form>

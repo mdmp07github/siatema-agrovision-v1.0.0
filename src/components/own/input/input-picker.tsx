@@ -82,6 +82,95 @@ export default function InputPicker({
 
   if (!name) return null
 
+  const funMaskDate1 = (sValue: string): string => {
+    const clean = sValue.replace(/\D/g, "").slice(0, 8);
+    const padded = clean.padEnd(8, "_");
+    return `${padded.slice(0, 4)}-${padded.slice(4, 6)}-${padded.slice(6, 8)}`;
+  };
+
+  const funMaskDate2 = (sValue: string): string => {
+    const clean = sValue.replace(/\D/g, "").slice(0, 16);
+    const padded = clean.padEnd(16, "_");
+    const f1 = `${padded.slice(0, 4)}-${padded.slice(4, 6)}-${padded.slice(6, 8)}`;
+    const f2 = `${padded.slice(8, 12)}-${padded.slice(12, 14)}-${padded.slice(14, 16)}`;
+    return `${f1} - ${f2}`;
+  };
+
+  const funMaskDate3 = (sValue: string): string => {
+    const digits = sValue.replace(/\D/g, "");
+    if (digits.length === 0) return "____-__-__";
+
+    const totalDates = Math.ceil(digits.length / 8);
+    const blocks: string[] = [];
+
+    for (let i = 0; i < totalDates; i++) {
+      const chunk = digits.slice(i * 8, (i + 1) * 8).padEnd(8, "_");
+      const y = chunk.slice(0, 4);
+      const m = chunk.slice(4, 6);
+      const d = chunk.slice(6, 8);
+      blocks.push(`${y}-${m}-${d}`);
+    }
+
+    return blocks.join(", ");
+  };
+
+  const parseAndTriggerRangeChange = (text: string, onChange: (val: any) => void) => {
+    const clean = text.replace(/\D/g, "");
+    if (clean.length === 16) {
+      const y1 = Number(clean.slice(0, 4)), m1 = Number(clean.slice(4, 6)), d1 = Number(clean.slice(6, 8));
+      const y2 = Number(clean.slice(8, 12)), m2 = Number(clean.slice(12, 14)), d2 = Number(clean.slice(14, 16));
+
+      const dateFrom = new Date(y1, m1 - 1, d1);
+      const dateTo = new Date(y2, m2 - 1, d2);
+
+      if (
+        isValidDate(dateFrom) && dateFrom.getFullYear() === y1 && dateFrom.getMonth() === m1 - 1 && dateFrom.getDate() === d1 &&
+        isValidDate(dateTo) && dateTo.getFullYear() === y2 && dateTo.getMonth() === m2 - 1 && dateTo.getDate() === d2
+      ) {
+        setDate({ from: dateFrom, to: dateTo });
+        onChange({ from: dateFrom, to: dateTo });
+        return;
+      }
+    }
+    onChange(undefined);
+  };
+
+  const parseAndTriggerMultipleChange = (text: string, onChange: (val: any) => void) => {
+    const clean = text.replace(/\D/g, "");
+    if (clean.length === 0) {
+      setDate(undefined);
+      onChange(undefined);
+      return;
+    }
+
+    const dateList: Date[] = [];
+    const totalChunks = Math.floor(clean.length / 8);
+
+    for (let i = 0; i < totalChunks; i++) {
+      const chunk = clean.slice(i * 8, (i + 1) * 8);
+      const y = Number(chunk.slice(0, 4));
+      const m = Number(chunk.slice(4, 6));
+      const d = Number(chunk.slice(6, 8));
+      const parsed = new Date(y, m - 1, d);
+
+      if (
+        isValidDate(parsed) &&
+        parsed.getFullYear() === y &&
+        parsed.getMonth() === m - 1 &&
+        parsed.getDate() === d
+      ) {
+        dateList.push(parsed);
+      }
+    }
+
+    if (dateList.length > 0) {
+      setDate(dateList);
+      onChange(dateList);
+    } else {
+      onChange(undefined);
+    }
+  };
+
   const isDayDisabled = (day: Date) => {
 
     const base = disableDays.day ? toLocalDate(disableDays.day) : toLocalDate(new Date());
@@ -303,17 +392,171 @@ export default function InputPicker({
                     className={`pr-10 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`}
                     name={field.name}
                     /* ref={field.ref} */
-                    value={inputText || ""}
+                    value={inputText || (type === "range" ? "____-__-__ - ____-__-__" : type === "multiple" ? "____-__-__" : "____-__-__")}
                     placeholder={placeholder}
-                    readOnly={type !== "single"}
+                    /* readOnly={type !== "single"} */
+                    onBeforeInput={(e: any) => {
+                      if (type === "single" || type === "range" || type === "multiple") {
+                        const input = e.target as HTMLInputElement;
+                        const char = e.data;
+
+                        if (!/^\d$/.test(char)) {
+                          e.preventDefault();
+                          return;
+                        }
+
+                        const defaultMask = type === "range" ? "____-__-__ - ____-__-__" : "____-__-__";
+                        const currentText = inputText || defaultMask;
+                        let start = input.selectionStart ?? 0;
+
+                        // Avanzar si el cursor está sobre separadores
+                        while (start < currentText.length && (currentText[start] === "-" || currentText[start] === " " || currentText[start] === ",")) {
+                          start++;
+                        }
+
+                        let targetText = currentText;
+                        if (type === "multiple" && start >= currentText.length) {
+                          targetText = currentText + ", ____-__-__";
+                          while (start < targetText.length && (targetText[start] === "-" || targetText[start] === " " || targetText[start] === ",")) {
+                            start++;
+                          }
+                        }
+
+                        if (start >= targetText.length) {
+                          e.preventDefault();
+                          return;
+                        }
+
+                        e.preventDefault();
+
+                        const textArray = targetText.split("");
+                        textArray[start] = char;
+                        const updatedText = textArray.join("");
+
+                        setInputText(updatedText);
+
+                        let nextCursor = start + 1;
+                        while (nextCursor < updatedText.length && (updatedText[nextCursor] === "-" || updatedText[nextCursor] === " " || updatedText[nextCursor] === ",")) {
+                          nextCursor++;
+                        }
+                        setTimeout(() => input.setSelectionRange(nextCursor, nextCursor), 0);
+
+                        if (type === "single") {
+                          if (!updatedText.includes("_")) {
+                            const [y, m, d] = updatedText.split("-").map(Number);
+                            const parsedDate = new Date(y, m - 1, d);
+                            if (
+                              isValidDate(parsedDate) &&
+                              parsedDate.getFullYear() === y &&
+                              parsedDate.getMonth() === m - 1 &&
+                              parsedDate.getDate() === d
+                            ) {
+                              setDate(parsedDate);
+                              setMonth(parsedDate);
+                              field.onChange(parsedDate);
+                              return;
+                            }
+                          }
+                          field.onChange(undefined);
+                        } else if (type === "range") {
+                          parseAndTriggerRangeChange(updatedText, field.onChange);
+                        } else if (type === "multiple") {
+                          parseAndTriggerMultipleChange(updatedText, field.onChange);
+                        }
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (type === "single" || type === "range" || type === "multiple") {
+                        const input = e.target as HTMLInputElement;
+                        let start = input.selectionStart ?? 0;
+                        let end = input.selectionEnd ?? 0;
+
+                        if (e.key === "Backspace") {
+                          e.preventDefault();
+
+                          const defaultMask = type === "range" ? "____-__-__ - ____-__-__" : "____-__-__";
+                          const textArray = (inputText || defaultMask).split("");
+
+                          if (start !== end) {
+                            for (let i = start; i < end; i++) {
+                              if (textArray[i] !== "-" && textArray[i] !== " " && textArray[i] !== ",") {
+                                textArray[i] = "_";
+                              }
+                            }
+                          } else {
+                            if (start > 0 && (textArray[start - 1] === "-" || textArray[start - 1] === " " || textArray[start - 1] === ",")) {
+                              while (start > 0 && (textArray[start - 1] === "-" || textArray[start - 1] === " " || textArray[start - 1] === ",")) {
+                                start--;
+                              }
+                            }
+                            if (start > 0) {
+                              start--;
+                              textArray[start] = "_";
+                            }
+                          }
+
+                          let updatedText = textArray.join("");
+
+                          if (type === "multiple") {
+                            while (updatedText.endsWith(", ____-__-__") && updatedText.length > 10) {
+                              updatedText = updatedText.slice(0, -12);
+                            }
+                          }
+
+                          setInputText(updatedText);
+
+                          if (type === "single") {
+                            field.onChange(undefined);
+                          } else if (type === "range") {
+                            parseAndTriggerRangeChange(updatedText, field.onChange);
+                          } else if (type === "multiple") {
+                            parseAndTriggerMultipleChange(updatedText, field.onChange);
+                          }
+
+                          setTimeout(() => input.setSelectionRange(start, start), 0);
+                        }
+                      }
+                    }}
                     onChange={(e) => {
-                      if (type !== "single") return
-                      const nextDate = new Date(e.target.value)
-                      setInputText(e.target.value)
-                      if (isValidDate(nextDate)) {
-                        field.onChange(nextDate)
-                      } else {
+                      if (type === "range") {
+                        const formattedValue = funMaskDate2(e.target.value);
+                        setInputText(formattedValue);
+                        parseAndTriggerRangeChange(formattedValue, field.onChange);
+                      } else if (type == "single") {
+                        const formattedValue = funMaskDate1(e.target.value);
+                        setInputText(formattedValue);
+                        const cleanDigits = formattedValue.replace(/\D/g, "");
+                        if (cleanDigits.length === 8) {
+                          const year = Number(cleanDigits.slice(0, 4));
+                          const month = Number(cleanDigits.slice(4, 6));
+                          const day = Number(cleanDigits.slice(6, 8));
+                          const parsedDate = new Date(year, month - 1, day);
+
+                          if (
+                            isValidDate(parsedDate) &&
+                            parsedDate.getFullYear() === year &&
+                            parsedDate.getMonth() === month - 1 &&
+                            parsedDate.getDate() === day
+                          ) {
+                            setDate(parsedDate);
+                            setMonth(parsedDate);
+                            field.onChange(parsedDate);
+                            return;
+                          }
+                        }
                         field.onChange(undefined)
+                      } else if (type === "multiple") {
+                        const formattedValue = funMaskDate3(e.target.value);
+                        setInputText(formattedValue);
+                        parseAndTriggerMultipleChange(formattedValue, field.onChange);
+                      } else {
+                        const nextDate = new Date(e.target.value)
+                        setInputText(e.target.value)
+                        if (isValidDate(nextDate)) {
+                          field.onChange(nextDate)
+                        } else {
+                          field.onChange(undefined)
+                        }
                       }
                     }}
                     ref={(e) => {
