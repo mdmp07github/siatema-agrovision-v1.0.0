@@ -420,7 +420,7 @@ export default function InputPicker({
 
             <div className="relative">
               <FormControl>
-                <ButtonGroup className="w-full">
+                {/* <ButtonGroup className="w-full"> */}
                   <Input
                     className={`pr-10 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`}
                     name={field.name}
@@ -446,14 +446,12 @@ export default function InputPicker({
                         let currentText = inputText || defaultMask
                         let start = input.selectionStart ?? 0
 
-                        // Definir el límite máximo según el tipo
                         const maxLength = type === "single"
                           ? maskUnit.length
                           : type === "range"
                             ? (maskUnit.length * 2) + 3
                             : Infinity
 
-                        // Avanzar el cursor si cae sobre un separador
                         while (
                           start < currentText.length &&
                           (currentText[start] === "-" || currentText[start] === "/" || currentText[start] === " " || currentText[start] === ",")
@@ -461,7 +459,6 @@ export default function InputPicker({
                           start++
                         }
 
-                        // MODIFICACIÓN: Bloquear si se alcanza el tamaño máximo para single/range
                         if ((type === "single" || type === "range") && start >= maxLength) {
                           e.preventDefault()
                           return
@@ -615,7 +612,7 @@ export default function InputPicker({
                       }
                     }}
                   />
-                  <Button
+                  {/* <Button
                     type="button"
                     size="icon"
                     variant={variant}
@@ -629,7 +626,7 @@ export default function InputPicker({
                   >
                     <BrushCleaning />
                   </Button>
-                </ButtonGroup>
+                </ButtonGroup> */}
               </FormControl>
 
               <Popover open={open} onOpenChange={setOpen}>
@@ -637,9 +634,9 @@ export default function InputPicker({
                   <Button
                     disabled={disable}
                     variant="ghost"
-                    className={`absolute mr-8 z-10 ${label ? "top-1/2" : "top-2.5"} right-3 size-6 -translate-y-1/2`}
+                    className={`absolute z-10 ${label ? "top-1/2" : "top-2.5"} right-1 size-6 -translate-y-1/2`}
                   >
-                    <CalendarIcon className="size-3.5" />
+                    <CalendarIcon className="h-5 w-5" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto overflow-hidden p-0" align="end" sideOffset={10}>

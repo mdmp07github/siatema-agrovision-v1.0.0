@@ -59,7 +59,7 @@ function Dashboard() {
       <div className="flex gap-2 w-full px-1">
         <Form {...form}>
           <InputText form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} binding />
-          {/* <InputPassword form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
+          <InputPassword form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} binding />
           {/* <InputSingleSelect form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} data={gDatosRamas1} placeholder="-- Seleccione --" binding /> */}
           {/* <InputEmail form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputMultiFile form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
