@@ -424,9 +424,16 @@ export default function InputPicker({
                   <Input
                     className={`pr-10 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`}
                     name={field.name}
-                    value={inputText || defaultMask}
+                    value={inputText || (format === "large" ? "" : defaultMask)}
                     placeholder={placeholder}
+                    readOnly={format === "large"}
                     onBeforeInput={(e: any) => {
+
+                      if (format === "large") {
+                        e.preventDefault()
+                        return
+                      }
+
                       if (type === "single" || type === "range" || type === "multiple") {
                         const input = e.target as HTMLInputElement
                         const char = e.data
@@ -440,10 +447,10 @@ export default function InputPicker({
                         let start = input.selectionStart ?? 0
 
                         // Definir el límite máximo según el tipo
-                        const maxLength = type === "single" 
-                          ? maskUnit.length 
-                          : type === "range" 
-                            ? (maskUnit.length * 2) + 3 
+                        const maxLength = type === "single"
+                          ? maskUnit.length
+                          : type === "range"
+                            ? (maskUnit.length * 2) + 3
                             : Infinity
 
                         // Avanzar el cursor si cae sobre un separador
@@ -507,6 +514,13 @@ export default function InputPicker({
                       }
                     }}
                     onKeyDown={(e) => {
+                      if (format === "large") {
+                        if (e.key === "Backspace" || e.key === "Delete") {
+                          e.preventDefault()
+                          return
+                        }
+                      }
+                      
                       if (type === "single" || type === "range" || type === "multiple") {
                         const input = e.target as HTMLInputElement
                         let start = input.selectionStart ?? 0

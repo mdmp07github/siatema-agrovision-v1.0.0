@@ -47,7 +47,7 @@ function Dashboard() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       idInputEjemplo1: "Ejemplo 1",
-      /* idInputEjemplo2: new Date(), */
+      idInputEjemplo2: new Date(),
     },
   })
 
@@ -65,7 +65,7 @@ function Dashboard() {
           {/* <InputMultiFile form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputMultiSelect form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} data={gDatosRamas1} binding /> */}
           {/* <InputNumber form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
-          <InputPicker form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} type="multiple" format="dd/mm/yyyy" variant={"green"} binding />
+          <InputPicker form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} type="single" format="large" variant={"green"} binding />
           {/* <InputSingleFile form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputTextArea form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
         </Form>
