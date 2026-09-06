@@ -13,6 +13,7 @@ import InputSingleFile from "@/components/own/input/input-single-file"
 import InputTextArea from "@/components/own/input/input-text-area"
 import InputSingleSelect from "@/components/own/input/input-single-select"
 import InputPassword from "@/components/own/input/input-password"
+import { enUS } from "react-day-picker/locale"
 
 const oInfo = [{
   info: "Info 1"
@@ -64,7 +65,7 @@ function Dashboard() {
           {/* <InputMultiFile form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputMultiSelect form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} data={gDatosRamas1} binding /> */}
           {/* <InputNumber form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
-          <InputPicker form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} type="single" format="yyyy-mm-dd" binding />
+          <InputPicker form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} type="multiple" format="dd/mm/yyyy" variant={"green"} binding />
           {/* <InputSingleFile form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputTextArea form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
         </Form>
