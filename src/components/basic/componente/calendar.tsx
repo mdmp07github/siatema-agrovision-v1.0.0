@@ -3,6 +3,7 @@ import {
   DayPicker,
   getDefaultClassNames,
   type DayButton,
+  type DropdownProps,
   type Locale,
 } from "react-day-picker"
 
@@ -10,11 +11,20 @@ import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/basic/componente/button"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "lucide-react"
 
+// Importa los componentes Select de Shadcn UI
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/basic/componente/select"
+
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
-  captionLayout = "label",
+  captionLayout = "dropdown", // Cambiado a "dropdown" para activar la selección de meses/años
   buttonVariant = "ghost",
   locale,
   formatters,
@@ -49,7 +59,7 @@ function Calendar({
         ),
         month: cn("flex w-full flex-col gap-4", defaultClassNames.month),
         nav: cn(
-          "absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1",
+          "absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1 z-10",
           defaultClassNames.nav
         ),
         button_previous: cn(
@@ -67,17 +77,14 @@ function Calendar({
           defaultClassNames.month_caption
         ),
         dropdowns: cn(
-          "flex h-(--cell-size) w-full items-center justify-center gap-1.5 text-sm font-medium",
+          "flex h-(--cell-size) items-center justify-center gap-1.5 text-sm font-medium z-20",
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
           "relative rounded-(--cell-radius)",
           defaultClassNames.dropdown_root
         ),
-        dropdown: cn(
-          "absolute inset-0 bg-popover opacity-0",
-          defaultClassNames.dropdown
-        ),
+        dropdown: cn("hidden", defaultClassNames.dropdown), // Ocultamos el select nativo HTML
         caption_label: cn(
           "font-medium select-none",
           captionLayout === "label"
@@ -157,6 +164,38 @@ function Calendar({
 
           return (
             <ChevronDownIcon className={cn("size-4", className)} {...props} />
+          )
+        },
+        Dropdown: ({ value, onChange, options }: DropdownProps) => {
+          const selected = options?.find((option) => option.value === value)
+          const handleChange = (newValue: string) => {
+            const changeEvent = {
+              target: { value: newValue },
+            } as React.ChangeEvent<HTMLSelectElement>
+            onChange?.(changeEvent)
+          }
+
+          return (
+            <Select
+              value={value?.toString()}
+              onValueChange={(val: any) => handleChange(val)}
+            >
+              <SelectTrigger className="h-7 border-none p-3 text-xs font-semibold focus:ring-0 shadow-none hover:bg-accent focus:bg-accent focus:text-accent-foreground rounded">
+                <SelectValue>{selected?.label}</SelectValue>
+              </SelectTrigger>
+              <SelectContent className="max-h-60 min-w-32">
+                {options?.map((option) => (
+                  <SelectItem
+                    key={option.value}
+                    value={option.value.toString()}
+                    disabled={option.disabled}
+                    className="text-xs"
+                  >
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           )
         },
         DayButton: ({ ...props }) => (
