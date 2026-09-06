@@ -636,7 +636,7 @@ export default function InputPicker({
                     variant="ghost"
                     className={`absolute z-10 ${label ? "top-1/2" : "top-2.5"} right-1 size-6 -translate-y-1/2`}
                   >
-                    <CalendarIcon className="h-5 w-5" />
+                    <CalendarIcon className="h-5 w-5 opacity-70" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto overflow-hidden p-0" align="end" sideOffset={10}>
