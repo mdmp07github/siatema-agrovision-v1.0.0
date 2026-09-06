@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from "@/components/basic/componente/calendar"
 import { Button } from "../../basic/componente/button"
 import type { ButtonProps } from "../../basic/componente/button"
 import { CalendarIcon } from "lucide-react"
@@ -422,7 +422,7 @@ export default function InputPicker({
               <FormControl>
                 {/* <ButtonGroup className="w-full"> */}
                   <Input
-                    className={`pr-10 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                    className={`pr-9 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`}
                     name={field.name}
                     value={inputText || (format === "large" ? "" : defaultMask)}
                     placeholder={placeholder}
