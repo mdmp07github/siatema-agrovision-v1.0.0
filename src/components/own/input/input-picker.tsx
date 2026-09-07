@@ -11,13 +11,11 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
 import { Calendar } from "@/components/basic/componente/calendar"
 import { Button } from "../../basic/componente/button"
-import type { ButtonProps } from "../../basic/componente/button"
 import { CalendarIcon } from "lucide-react"
 import { useEffect, useState } from "react"
-import { ButtonGroup } from "../../basic/componente/button-group"
 import { es } from "react-day-picker/locale"
 import { Label } from "../../ui/label"
-import { BrushCleaning, Info } from "lucide-react"
+import { Info } from "lucide-react"
 
 interface VDMInputProps {
   className?: string
@@ -37,7 +35,6 @@ interface VDMInputProps {
   format?: string // "yyyy-mm-dd" | "dd/mm/yyyy" | "large"
   locale?: Partial<import("react-day-picker").Locale>
   type?: "single" | "range" | "multiple"
-  variant?: ButtonProps["variant"]
   disableDays?: {
     day?: Date | string
     past?: boolean
@@ -63,7 +60,6 @@ export default function InputPicker({
   info,
   format = "yyyy-mm-dd",
   type = "single",
-  variant = "default",
   locale = es,
   disableDays = { day: new Date(), past: false, future: false, weekends: false },
   disableRanges = [],
@@ -420,164 +416,79 @@ export default function InputPicker({
 
             <div className="relative">
               <FormControl>
-                {/* <ButtonGroup className="w-full"> */}
-                  <Input
-                    className={`pr-9 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`}
-                    name={field.name}
-                    value={inputText || (format === "large" ? "" : defaultMask)}
-                    placeholder={placeholder}
-                    readOnly={format === "large"}
-                    onBeforeInput={(e: any) => {
+                <Input
+                  className={`pr-9 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                  name={field.name}
+                  value={inputText || (format === "large" ? "" : defaultMask)}
+                  placeholder={placeholder}
+                  readOnly={format === "large"}
+                  onBeforeInput={(e: any) => {
 
-                      if (format === "large") {
+                    if (format === "large") {
+                      e.preventDefault()
+                      return
+                    }
+
+                    if (type === "single" || type === "range" || type === "multiple") {
+                      const input = e.target as HTMLInputElement
+                      const char = e.data
+
+                      if (!/^\d$/.test(char)) {
                         e.preventDefault()
                         return
                       }
 
-                      if (type === "single" || type === "range" || type === "multiple") {
-                        const input = e.target as HTMLInputElement
-                        const char = e.data
+                      let currentText = inputText || defaultMask
+                      let start = input.selectionStart ?? 0
 
-                        if (!/^\d$/.test(char)) {
-                          e.preventDefault()
-                          return
-                        }
+                      const maxLength = type === "single"
+                        ? maskUnit.length
+                        : type === "range"
+                          ? (maskUnit.length * 2) + 3
+                          : Infinity
 
-                        let currentText = inputText || defaultMask
-                        let start = input.selectionStart ?? 0
+                      while (
+                        start < currentText.length &&
+                        (currentText[start] === "-" || currentText[start] === "/" || currentText[start] === " " || currentText[start] === ",")
+                      ) {
+                        start++
+                      }
 
-                        const maxLength = type === "single"
-                          ? maskUnit.length
-                          : type === "range"
-                            ? (maskUnit.length * 2) + 3
-                            : Infinity
+                      if ((type === "single" || type === "range") && start >= maxLength) {
+                        e.preventDefault()
+                        return
+                      }
 
+                      if (type === "multiple" && start >= currentText.length) {
+                        currentText += `, ${maskUnit}`
                         while (
                           start < currentText.length &&
                           (currentText[start] === "-" || currentText[start] === "/" || currentText[start] === " " || currentText[start] === ",")
                         ) {
                           start++
                         }
-
-                        if ((type === "single" || type === "range") && start >= maxLength) {
-                          e.preventDefault()
-                          return
-                        }
-
-                        if (type === "multiple" && start >= currentText.length) {
-                          currentText += `, ${maskUnit}`
-                          while (
-                            start < currentText.length &&
-                            (currentText[start] === "-" || currentText[start] === "/" || currentText[start] === " " || currentText[start] === ",")
-                          ) {
-                            start++
-                          }
-                        }
-
-                        e.preventDefault()
-
-                        const textArray = currentText.split("")
-                        textArray[start] = char
-                        const updatedText = textArray.join("")
-
-                        setInputText(updatedText)
-
-                        let nextCursor = start + 1
-                        while (
-                          nextCursor < updatedText.length &&
-                          (updatedText[nextCursor] === "-" || updatedText[nextCursor] === "/" || updatedText[nextCursor] === " " || updatedText[nextCursor] === ",")
-                        ) {
-                          nextCursor++
-                        }
-                        setTimeout(() => input.setSelectionRange(nextCursor, nextCursor), 0)
-
-                        if (type === "single") {
-                          if (!updatedText.includes("_")) {
-                            const cleanDigits = updatedText.replace(/\D/g, "")
-                            const parsedDate = parseChunkToDate(cleanDigits)
-                            if (parsedDate) {
-                              setDate(parsedDate)
-                              setMonth(parsedDate)
-                              field.onChange(parsedDate)
-                              return
-                            }
-                          }
-                          field.onChange(undefined)
-                        } else if (type === "range") {
-                          parseAndTriggerRangeChange(updatedText, field.onChange)
-                        } else if (type === "multiple") {
-                          parseAndTriggerMultipleChange(updatedText, field.onChange)
-                        }
                       }
-                    }}
-                    onKeyDown={(e) => {
-                      if (format === "large") {
-                        if (e.key === "Backspace" || e.key === "Delete") {
-                          e.preventDefault()
-                          return
-                        }
+
+                      e.preventDefault()
+
+                      const textArray = currentText.split("")
+                      textArray[start] = char
+                      const updatedText = textArray.join("")
+
+                      setInputText(updatedText)
+
+                      let nextCursor = start + 1
+                      while (
+                        nextCursor < updatedText.length &&
+                        (updatedText[nextCursor] === "-" || updatedText[nextCursor] === "/" || updatedText[nextCursor] === " " || updatedText[nextCursor] === ",")
+                      ) {
+                        nextCursor++
                       }
-                      
-                      if (type === "single" || type === "range" || type === "multiple") {
-                        const input = e.target as HTMLInputElement
-                        let start = input.selectionStart ?? 0
-                        let end = input.selectionEnd ?? 0
+                      setTimeout(() => input.setSelectionRange(nextCursor, nextCursor), 0)
 
-                        if (e.key === "Backspace") {
-                          e.preventDefault()
-
-                          const textArray = (inputText || defaultMask).split("")
-
-                          if (start !== end) {
-                            for (let i = start; i < end; i++) {
-                              if (textArray[i] !== "-" && textArray[i] !== "/" && textArray[i] !== " " && textArray[i] !== ",") {
-                                textArray[i] = "_"
-                              }
-                            }
-                          } else {
-                            if (start > 0 && (textArray[start - 1] === "-" || textArray[start - 1] === "/" || textArray[start - 1] === " " || textArray[start - 1] === ",")) {
-                              while (start > 0 && (textArray[start - 1] === "-" || textArray[start - 1] === "/" || textArray[start - 1] === " " || textArray[start - 1] === ",")) {
-                                start--
-                              }
-                            }
-                            if (start > 0) {
-                              start--
-                              textArray[start] = "_"
-                            }
-                          }
-
-                          let updatedText = textArray.join("")
-
-                          if (type === "multiple") {
-                            while (updatedText.endsWith(`, ${maskUnit}`) && updatedText.length > 10) {
-                              updatedText = updatedText.slice(0, -(maskUnit.length + 2))
-                            }
-                          }
-
-                          setInputText(updatedText)
-
-                          if (type === "single") {
-                            field.onChange(undefined)
-                          } else if (type === "range") {
-                            parseAndTriggerRangeChange(updatedText, field.onChange)
-                          } else if (type === "multiple") {
-                            parseAndTriggerMultipleChange(updatedText, field.onChange)
-                          }
-
-                          setTimeout(() => input.setSelectionRange(start, start), 0)
-                        }
-                      }
-                    }}
-                    onChange={(e) => {
-                      if (type === "range") {
-                        const formattedValue = funMaskDate2(e.target.value)
-                        setInputText(formattedValue)
-                        parseAndTriggerRangeChange(formattedValue, field.onChange)
-                      } else if (type === "single") {
-                        const formattedValue = funMaskDate1(e.target.value)
-                        setInputText(formattedValue)
-                        const cleanDigits = formattedValue.replace(/\D/g, "")
-                        if (cleanDigits.length === 8) {
+                      if (type === "single") {
+                        if (!updatedText.includes("_")) {
+                          const cleanDigits = updatedText.replace(/\D/g, "")
                           const parsedDate = parseChunkToDate(cleanDigits)
                           if (parsedDate) {
                             setDate(parsedDate)
@@ -587,46 +498,115 @@ export default function InputPicker({
                           }
                         }
                         field.onChange(undefined)
+                      } else if (type === "range") {
+                        parseAndTriggerRangeChange(updatedText, field.onChange)
                       } else if (type === "multiple") {
-                        const formattedValue = funMaskDate3(e.target.value)
-                        setInputText(formattedValue)
-                        parseAndTriggerMultipleChange(formattedValue, field.onChange)
-                      } else {
-                        const nextDate = new Date(e.target.value)
-                        setInputText(e.target.value)
-                        if (isValidDate(nextDate)) {
-                          field.onChange(nextDate)
+                        parseAndTriggerMultipleChange(updatedText, field.onChange)
+                      }
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (format === "large") {
+                      if (e.key === "Backspace" || e.key === "Delete") {
+                        e.preventDefault()
+                        return
+                      }
+                    }
+
+                    if (type === "single" || type === "range" || type === "multiple") {
+                      const input = e.target as HTMLInputElement
+                      let start = input.selectionStart ?? 0
+                      let end = input.selectionEnd ?? 0
+
+                      if (e.key === "Backspace") {
+                        e.preventDefault()
+
+                        const textArray = (inputText || defaultMask).split("")
+
+                        if (start !== end) {
+                          for (let i = start; i < end; i++) {
+                            if (textArray[i] !== "-" && textArray[i] !== "/" && textArray[i] !== " " && textArray[i] !== ",") {
+                              textArray[i] = "_"
+                            }
+                          }
                         } else {
+                          if (start > 0 && (textArray[start - 1] === "-" || textArray[start - 1] === "/" || textArray[start - 1] === " " || textArray[start - 1] === ",")) {
+                            while (start > 0 && (textArray[start - 1] === "-" || textArray[start - 1] === "/" || textArray[start - 1] === " " || textArray[start - 1] === ",")) {
+                              start--
+                            }
+                          }
+                          if (start > 0) {
+                            start--
+                            textArray[start] = "_"
+                          }
+                        }
+
+                        let updatedText = textArray.join("")
+
+                        if (type === "multiple") {
+                          while (updatedText.endsWith(`, ${maskUnit}`) && updatedText.length > 10) {
+                            updatedText = updatedText.slice(0, -(maskUnit.length + 2))
+                          }
+                        }
+
+                        setInputText(updatedText)
+
+                        if (type === "single") {
                           field.onChange(undefined)
+                        } else if (type === "range") {
+                          parseAndTriggerRangeChange(updatedText, field.onChange)
+                        } else if (type === "multiple") {
+                          parseAndTriggerMultipleChange(updatedText, field.onChange)
+                        }
+
+                        setTimeout(() => input.setSelectionRange(start, start), 0)
+                      }
+                    }
+                  }}
+                  onChange={(e) => {
+                    if (type === "range") {
+                      const formattedValue = funMaskDate2(e.target.value)
+                      setInputText(formattedValue)
+                      parseAndTriggerRangeChange(formattedValue, field.onChange)
+                    } else if (type === "single") {
+                      const formattedValue = funMaskDate1(e.target.value)
+                      setInputText(formattedValue)
+                      const cleanDigits = formattedValue.replace(/\D/g, "")
+                      if (cleanDigits.length === 8) {
+                        const parsedDate = parseChunkToDate(cleanDigits)
+                        if (parsedDate) {
+                          setDate(parsedDate)
+                          setMonth(parsedDate)
+                          field.onChange(parsedDate)
+                          return
                         }
                       }
-                    }}
-                    ref={(e) => {
-                      field.ref(e)
-                      if (ref) {
-                        if (typeof ref === "function") {
-                          (ref as (e: HTMLInputElement | null) => void)(e)
-                        } else {
-                          (ref as React.RefObject<HTMLInputElement | null>).current = e
-                        }
-                      }
-                    }}
-                  />
-                  {/* <Button
-                    type="button"
-                    size="icon"
-                    variant={variant}
-                    disabled={disable}
-                    className={`${label ? "" : "-mt-2"}`}
-                    onClick={() => {
-                      setInputText("")
-                      setDate(undefined)
                       field.onChange(undefined)
-                    }}
-                  >
-                    <BrushCleaning />
-                  </Button>
-                </ButtonGroup> */}
+                    } else if (type === "multiple") {
+                      const formattedValue = funMaskDate3(e.target.value)
+                      setInputText(formattedValue)
+                      parseAndTriggerMultipleChange(formattedValue, field.onChange)
+                    } else {
+                      const nextDate = new Date(e.target.value)
+                      setInputText(e.target.value)
+                      if (isValidDate(nextDate)) {
+                        field.onChange(nextDate)
+                      } else {
+                        field.onChange(undefined)
+                      }
+                    }
+                  }}
+                  ref={(e) => {
+                    field.ref(e)
+                    if (ref) {
+                      if (typeof ref === "function") {
+                        (ref as (e: HTMLInputElement | null) => void)(e)
+                      } else {
+                        (ref as React.RefObject<HTMLInputElement | null>).current = e
+                      }
+                    }
+                  }}
+                />
               </FormControl>
 
               <Popover open={open} onOpenChange={setOpen}>

@@ -10,10 +10,7 @@ import {
 } from "@/components/ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
 import { useEffect, useState } from "react"
-import { Button } from "../../basic/componente/button"
-import type { ButtonProps } from "../../basic/componente/button"
-import { ButtonGroup } from "../../basic/componente/button-group"
-import { BrushCleaning, Info } from "lucide-react"
+import { Info, Broom } from "lucide-react"
 
 interface VDMInputProps {
   className?: string,
@@ -30,7 +27,6 @@ interface VDMInputProps {
       info: string
     }[]
   }
-  variant?: ButtonProps["variant"]
   accept?: string[] // ✅ Nuevo prop: tipos de archivo permitidos (por ejemplo: ["pdf", "xml", "png"]) 
   ref?: React.RefObject<HTMLInputElement> | ((e: HTMLInputElement | null) => void) | null
 }
@@ -45,7 +41,6 @@ export default function InputMultiFile({
   label,
   placeholder,
   info,
-  variant = "default",
   accept = [], // por defecto vacío
   ref
 }: VDMInputProps) {
@@ -104,8 +99,19 @@ export default function InputMultiFile({
     )
   }
 
+  const on_click_clear = () => {
+
+    setFileName("")
+    form.setValue(name, multiple ? [] : null)
+
+    const input = document.getElementById(name) as HTMLInputElement
+    if (input) {
+      input.value = ""
+    }
+  }
+
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`relative w-full ${className}`}>
       <FormField
         control={form.control}
         name={name}
@@ -143,7 +149,7 @@ export default function InputMultiFile({
 
             <FormControl>
               <div className="flex items-center gap-2">
-                {/* ✅ Input invisible con tipo de archivos permitidos */}
+
                 <input
                   id={name}
                   type="file"
@@ -165,56 +171,31 @@ export default function InputMultiFile({
                   }}
                 />
 
-                {/* Campo de texto que muestra el nombre */}
-                <ButtonGroup className="w-full">
-                  <Input
-                    type="text"
-                    readOnly
-                    value={fileName || ""}
-                    placeholder={placeholder || ""}
-                    className={`pr-2 cursor-pointer hover:bg-input/40 dark:hover:bg-input/50 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""} ${label ? "" : "-mt-2"}`}
-                    onClick={() => document.getElementById(name)?.click()}
-                    ref={(e) => {
-                      field.ref(e);
-                      if (ref) {
-                        if (typeof ref === "function") {
-                          (ref as (e: HTMLInputElement | null) => void)(e);
-                        } else {
-                          (ref as React.RefObject<HTMLInputElement | null>).current = e;
-                        }
+                <Input
+                  type="text"
+                  readOnly
+                  value={fileName || ""}
+                  placeholder={placeholder || ""}
+                  className={`pr-9 cursor-pointer hover:bg-input/40 dark:hover:bg-input/50 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""} ${label ? "" : "-mt-2"}`}
+                  onClick={() => document.getElementById(name)?.click()}
+                  ref={(e) => {
+                    field.ref(e);
+                    if (ref) {
+                      if (typeof ref === "function") {
+                        (ref as (e: HTMLInputElement | null) => void)(e);
+                      } else {
+                        (ref as React.RefObject<HTMLInputElement | null>).current = e;
                       }
-                    }}
-                  />
-                  {/* Botón para abrir el selector */}
-                  <Button
-                    type="button"
-                    size="icon"
-                    variant={variant}
-                    disabled={disable}
-                    className={`${label ? "" : "-mt-2"}`}
-                    onClick={() => {
-                      // Limpia el nombre mostrado
-                      setFileName("")
-
-                      // Limpia el valor en react-hook-form
-                      field.onChange(multiple ? [] : null)
-
-                      // Limpia el input file (importante para permitir volver a seleccionar el mismo archivo)
-                      const input = document.getElementById(name) as HTMLInputElement
-                      if (input) {
-                        input.value = ""
-                      }
-                    }}
-                  >
-                    <BrushCleaning />
-                  </Button>
-                </ButtonGroup>
+                    }
+                  }}
+                />
               </div>
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
+      <><Broom className={`absolute top-0 right-0 ${label ? "mt-[35.5px]" : "mt-[7.5px]"} ${info ? "mt-[35.5px]" : "mt-[7.5px]"} mr-2 hover:opacity-80 active:opacity-70 cursor-pointer ${disable ? "pointer-events-none opacity-70" : ""} h-5 w-5`} onClick={() => on_click_clear()} /></>
     </div>
   )
 }
