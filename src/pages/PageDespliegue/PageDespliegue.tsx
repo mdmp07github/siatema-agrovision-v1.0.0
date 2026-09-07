@@ -323,7 +323,7 @@ function PageDespliegue() {
           </h4>
           <div className="flex gap-2">
             <InputText form={form} label="Inicales" placeholder="Ingrese Iniciales" name="idInputIniciales" binding />
-            <InputPicker form={form} label="Fecha" placeholder="Ingrese Fecha" format="dd/mm/yyyy" variant={"purple"} name="idInputPickerFecha" binding />
+            <InputPicker form={form} label="Fecha" placeholder="Ingrese Fecha" format="dd/mm/yyyy" name="idInputPickerFecha" binding />
           </div>
         </div>
         <div className="w-full rounded-lg bg-muted flex gap-2 items-center p-6">

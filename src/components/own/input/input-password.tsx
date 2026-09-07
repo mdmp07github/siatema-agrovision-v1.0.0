@@ -130,9 +130,9 @@ export default function InputPassword({ className, form, name, loading = false, 
           )}
         />
         {valueEye ? (
-          <><EyeOff className={`absolute top-0 right-0 ${label ? "mt-[35.5px]" : "mt-[7.5px]"} ${info ? "mt-[35.5px]" : "mt-[7.5px]"} mr-2 hover:opacity-80 active:opacity-70 cursor-pointer ${disable ? "pointer-events-none opacity-70" : ""} h-5 w-5`} onClick={() => on_click_eye()} /></>
+          <><EyeOff className={`absolute top-0 right-0 ${label ? "mt-[35.5px]" : "mt-[7.5px]"} ${info ? "mt-[35.5px]" : "mt-[7.5px]"} mr-2 hover:opacity-80 active:opacity-50 cursor-pointer ${disable ? "pointer-events-none opacity-70" : ""} h-5 w-5 opacity-70`} onClick={() => on_click_eye()} /></>
         ) : (
-          <><Eye className={`absolute top-0 right-0 ${label ? "mt-[35.5px]" : "mt-[7.5px]"} ${info ? "mt-[35.5px]" : "mt-[7.5px]"} mr-2 hover:opacity-80 active:opacity-70 cursor-pointer ${disable ? "pointer-events-none opacity-70" : ""} h-5 w-5`} onClick={() => on_click_eye()} /></>
+          <><Eye className={`absolute top-0 right-0 ${label ? "mt-[35.5px]" : "mt-[7.5px]"} ${info ? "mt-[35.5px]" : "mt-[7.5px]"} mr-2 hover:opacity-80 active:opacity-50 cursor-pointer ${disable ? "pointer-events-none opacity-70" : ""} h-5 w-5 opacity-70`} onClick={() => on_click_eye()} /></>
         )}
       </div>
     )
