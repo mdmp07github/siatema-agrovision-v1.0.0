@@ -66,10 +66,10 @@ const data = {
           title: "GitHub",
           url: "/page-despliegue",
         },
-        /* {
-          title: "Settings",
-          url: "#",
-        }, */
+        {
+          title: "Card",
+          url: "/page-card",
+        },
       ],
     },
     /* {

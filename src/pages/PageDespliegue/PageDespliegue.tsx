@@ -28,6 +28,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
+import { CardLayout, CardLayoutBody, CardLayoutHeader } from "@/components/basic/componente/card-layout"
 
 /* const oInfo = [{
   info: "Info 1"
@@ -314,10 +315,10 @@ function PageDespliegue() {
   }
 
   return (
-    <div className="space-y-3 w-full">
+    <CardLayout>
       {/* Header con formulario independiente para la Fecha */}
       <Form {...form}>
-        <div className="h-20 w-full rounded-lg bg-muted flex items-center justify-between px-6">
+        <CardLayoutHeader>
           <h4 className="text-3xl font-semibold text-neutral-700 dark:text-neutral-200 underline">
             Despliegue
           </h4>
@@ -325,8 +326,8 @@ function PageDespliegue() {
             <InputText form={form} label="Inicales" placeholder="Ingrese Iniciales" name="idInputIniciales" binding />
             <InputPicker form={form} label="Fecha" placeholder="Ingrese Fecha" format="dd/mm/yyyy" name="idInputPickerFecha" binding />
           </div>
-        </div>
-        <div className="w-full rounded-lg bg-muted flex gap-2 items-center p-6">
+        </CardLayoutHeader>
+        <CardLayoutBody>
           <div className="flex-col gap-2 w-1/4">
             <div className="flex gap-2 pb-2 w-full text-muted-foreground justify-between items-center">
               <div className="flex gap-2">
@@ -359,11 +360,11 @@ function PageDespliegue() {
               <InputPassword form={form} placeholder="Ingrese Token" name="idInputTextToken" disable={rValueInhToken} ref={inputRefToken as React.RefObject<HTMLInputElement> | ((e: HTMLInputElement | null) => void) | null} />
             </div>
           </div>
-        </div>
+        </CardLayoutBody>
       </Form>
 
       {/* Contenido principal con Tabs */}
-      <div className="w-full rounded-lg bg-muted flex items-center p-6">
+      <CardLayoutBody>
         <Tabs className="w-full" value={rValueTabDes} onValueChange={setValueTabDes}>
           <TabsList>
             <TabsTrigger value="mdk">
@@ -621,8 +622,8 @@ function PageDespliegue() {
             </Card>
           </TabsContent>
         </Tabs>
-      </div>
-    </div>
+      </CardLayoutBody>
+    </CardLayout>
   )
 }
 
