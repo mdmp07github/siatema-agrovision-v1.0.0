@@ -417,7 +417,7 @@ export default function InputPicker({
             <div className="relative">
               <FormControl>
                 <Input
-                  className={`pr-9 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                  className={`pr-9 ${disable ? "pointer-events-none bg-input-i" : "bg-input-n"} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""} input-p`}
                   name={field.name}
                   value={inputText || (format === "large" ? "" : defaultMask)}
                   placeholder={placeholder}

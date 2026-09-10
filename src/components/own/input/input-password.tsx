@@ -113,7 +113,7 @@ export default function InputPassword({ className, form, name, loading = false, 
               </div>
               <FormControl>
                 <Input type={valueEye ? "text" : "password"}
-                  className={`pr-9 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""} ${label ? "" : "-mt-2"}`}
+                  className={`pr-9 ${disable ? "pointer-events-none bg-input-i" : "bg-input-n"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""} ${label ? "" : "-mt-2"} input-p`}
                   placeholder={placeholder} {...field} ref={(e) => {
                     field.ref(e);
                     if (ref) {

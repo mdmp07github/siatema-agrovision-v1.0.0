@@ -101,7 +101,7 @@ export default function InputEmail({ className, form, name, loading = false, dis
                 </Popover>}
               </div>
               <FormControl>
-                <Input type="email" className={`${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`} placeholder={placeholder} {...field} ref={(e) => {
+                <Input type="email" className={`${disable ? "pointer-events-none bg-input-i" : "bg-input-n"} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""} input-p`} placeholder={placeholder} {...field} ref={(e) => {
                   field.ref(e);
                   if (ref) {
                     if (typeof ref === "function") {

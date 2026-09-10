@@ -60,10 +60,10 @@ function Dashboard() {
         <Form {...form}>
           <InputText form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} binding />
           <InputPassword form={form} name="idInputEjemplo1" info={{ width: "md", data: oInfo }} label="Inicales" binding />
-          {/* <InputSingleSelect form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} data={gDatosRamas1} placeholder="-- Seleccione --" binding /> */}
+          <InputSingleSelect form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} data={gDatosRamas1} placeholder="-- Seleccione --" binding />
           {/* <InputEmail form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} binding /> */}
           {/* <InputMultiFile form={form} name="idInputEjemplo2" label="Inicales" info={{ width: "md", data: oInfo }} /> */}
-          {/* <InputMultiSelect form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} data={gDatosRamas1} binding /> */}
+          <InputMultiSelect form={form} label="Inicales" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} data={gDatosRamas1} binding />
           {/* <InputNumber form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding /> */}
           <InputPicker form={form} label="Inicales" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} type="single" format="large" binding />
           {/* <InputSingleFile form={form} name="idInputEjemplo2" label="Inicales" info={{ width: "md", data: oInfo }} /> */}

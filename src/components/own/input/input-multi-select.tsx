@@ -203,9 +203,9 @@ export default function InputMultiSelect({
                 }}
               >
                 <MultiSelectTrigger
-                  className={`hover:bg-input/40 w-full overflow-hidden text-ellipsis whitespace-nowrap ${label ? "" : "-mt-2"} ${disable
-                    ? "pointer-events-none bg-neutral-100 dark:bg-input/10"
-                    : ""
+                  className={`input-p w-full overflow-hidden text-ellipsis whitespace-nowrap ${label ? "" : "-mt-2"} ${disable
+                    ? "pointer-events-none bg-input-i"
+                    : "bg-input-n"
                     } ${hasError
                       ? "border-destructive focus-visible:ring-destructive"
                       : ""
@@ -221,7 +221,7 @@ export default function InputMultiSelect({
 
                       if (valueArray.length === 0) {
                         return (
-                          <span className="block truncate opacity-50">
+                          <span className="block truncate text-muted-foreground">
                             {placeholder}
                           </span>
                         );

@@ -176,7 +176,7 @@ export default function InputMultiFile({
                   readOnly
                   value={fileName || ""}
                   placeholder={placeholder || ""}
-                  className={`pr-9 cursor-pointer hover:bg-input/40 dark:hover:bg-input/50 ${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""} ${label ? "" : "-mt-2"}`}
+                  className={`pr-9 cursor-pointer hover:bg-input/40 dark:hover:bg-input/50 ${disable ? "pointer-events-none bg-input-i" : "bg-input-n"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""} ${label ? "" : "-mt-2"} input-p`}
                   onClick={() => document.getElementById(name)?.click()}
                   ref={(e) => {
                     field.ref(e);

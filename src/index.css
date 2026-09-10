@@ -213,6 +213,9 @@
   --color-orange-foreground: var(--orange-foreground);
   --color-black: var(--black);
   --color-black-foreground: var(--black-foreground);
+
+  --color-input-n: var(--input-n);
+  --color-input-i: var(--input-i);
 }
 
 :root {
@@ -230,6 +233,10 @@
   --orange-foreground: oklch(0.985 0 0);
   --black: #9c9c9c;
   --black-foreground: oklch(0.985 0 0);
+
+  --input-n: #F3F3EF;
+  --input-i: #E2E2DC;
+  --input-h: #E8E8E1;
 }
 
 .dark {
@@ -247,6 +254,14 @@
   --orange-foreground: oklch(0.985 0 0);
   --black: #9c9c9c;
   --black-foreground: oklch(0.985 0 0);
+
+  --input-n: #34342C;
+  --input-i: #2E2E25;
+  --input-h: #3B3B32;
+}
+
+.input-p:hover {
+  background-color: var(--input-h);
 }
 
 /* ✨ Efecto Ripple adaptable a Light/Dark */

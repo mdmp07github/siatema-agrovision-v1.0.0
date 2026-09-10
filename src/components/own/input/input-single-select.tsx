@@ -189,9 +189,9 @@ export default function InputSingleSelect({
                 }}
               >
                 <SelectTrigger
-                  className={`hover:bg-input/40 w-full overflow-hidden text-ellipsis whitespace-nowrap ${label ? "" : "-mt-2"} ${disable
-                    ? "pointer-events-none bg-neutral-100 dark:bg-input/10"
-                    : ""
+                  className={`input-p w-full overflow-hidden text-ellipsis whitespace-nowrap ${label ? "" : "-mt-2"} ${disable
+                    ? "pointer-events-none bg-input-i"
+                    : "bg-input-n"
                     } ${hasError
                       ? "border-destructive focus-visible:ring-destructive"
                       : ""
@@ -203,7 +203,7 @@ export default function InputSingleSelect({
                         ?.flatMap((group) => group.options)
                         .find((opt) => opt.cod === field.value)
                       return (
-                        <span className={`block truncate ${!selected && "opacity-50"} `}>
+                        <span className={`block truncate ${!selected && "text-muted-foreground"} `}>
                           {selected
                             ? view === "both"
                               ? `${selected.cod} - ${selected.des}`

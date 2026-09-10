@@ -176,7 +176,7 @@ export default function InputNumber({
                 <Input
                   type="text"
                   inputMode="decimal"   // <-- permite "-", ".", números
-                  className={`${disable ? "pointer-events-none bg-neutral-100 dark:bg-input/10" : ""} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                  className={`${disable ? "pointer-events-none bg-input-i" : "bg-input-n"} ${label ? "" : "-mt-2"} ${hasError ? "border-destructive focus-visible:ring-destructive" : ""} input-p`}
                   placeholder={placeholder}
                   {...field}
                   step={allowInteger ? "any" : "1"}
