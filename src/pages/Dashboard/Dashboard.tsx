@@ -59,22 +59,22 @@ function Dashboard() {
       <div className="flex flex-col gap-2 w-full px-1">
         <Form {...form}>
           <div className="flex gap-2 w-full px-1">
-            <InputText form={form} label="Text" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} binding />
-            <InputEmail form={form} label="Email" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding />
-            <InputMultiFile form={form} name="idInputEjemplo3" label="Inicales" info={{ width: "md", data: oInfo }} />
+            <InputText form={form} label="Text" name="idInputEjemplo1" info={{ width: "md", data: oInfo }} binding disable />
+            <InputEmail form={form} label="Email" name="idInputEjemplo2" info={{ width: "md", data: oInfo }} binding disable />
+            <InputMultiFile form={form} name="idInputEjemplo3" label="Inicales" info={{ width: "md", data: oInfo }} disable />
           </div>
           <div className="flex gap-2 w-full px-1">
-            <InputMultiSelect form={form} label="Inicales" name="idInputEjemplo4" info={{ width: "md", data: oInfo }} data={gDatosRamas1} binding />
-            <InputNumber form={form} label="Inicales" name="idInputEjemplo5" info={{ width: "md", data: oInfo }} binding />
-            <InputPassword form={form} name="idInputEjemplo6" info={{ width: "md", data: oInfo }} label="Inicales" binding />
+            <InputMultiSelect form={form} label="Inicales" name="idInputEjemplo4" info={{ width: "md", data: oInfo }} data={gDatosRamas1} binding disable />
+            <InputNumber form={form} label="Inicales" name="idInputEjemplo5" info={{ width: "md", data: oInfo }} binding disable />
+            <InputPassword form={form} name="idInputEjemplo6" info={{ width: "md", data: oInfo }} label="Inicales" binding disable />
           </div>
           <div className="flex gap-2 w-full px-1">
-            <InputPicker form={form} label="Inicales" name="idInputEjemplo7" info={{ width: "md", data: oInfo }} type="single" format="large" binding />
-            <InputSingleFile form={form} name="idInputEjemplo8" label="Inicales" info={{ width: "md", data: oInfo }} />
-            <InputSingleSelect form={form} label="Inicales" name="idInputEjemplo9" info={{ width: "md", data: oInfo }} data={gDatosRamas1} placeholder="-- Seleccione --" binding />
+            <InputPicker form={form} label="Inicales" name="idInputEjemplo7" info={{ width: "md", data: oInfo }} type="single" format="large" binding disable />
+            <InputSingleFile form={form} name="idInputEjemplo8" label="Inicales" info={{ width: "md", data: oInfo }} disable />
+            <InputSingleSelect form={form} label="Inicales" name="idInputEjemplo9" info={{ width: "md", data: oInfo }} data={gDatosRamas1} placeholder="-- Seleccione --" binding disable />
           </div>
           <div className="flex gap-2 w-full px-1">
-            <InputTextArea form={form} label="Inicales" name="idInputEjemplo10" info={{ width: "md", data: oInfo }} binding />
+            <InputTextArea form={form} label="Inicales" name="idInputEjemplo10" info={{ width: "md", data: oInfo }} binding disable />
           </div>
         </Form>
       </div>

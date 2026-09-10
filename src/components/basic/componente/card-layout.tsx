@@ -16,7 +16,7 @@ export const CardLayout: React.FC<CardProps> = ({ children, className = '', ...p
 export const CardLayoutHeader: React.FC<CardProps> = ({ children, className = '', ...props }) => {
   return (
     <div
-      className={`h-20 w-full rounded-lg bg-muted flex items-center justify-between px-6 ${className}`}
+      className={`h-20 w-full rounded-lg bg-muted/50 flex items-center justify-between px-6 ${className}`}
       {...props}
     >
       {children}
@@ -27,7 +27,7 @@ export const CardLayoutHeader: React.FC<CardProps> = ({ children, className = ''
 export const CardLayoutBody: React.FC<CardProps> = ({ children, className = '', ...props }) => {
   return (
     <div
-      className={`flex gap-3 w-full rounded-lg bg-muted items-center p-6 ${className}`}
+      className={`flex gap-3 w-full rounded-lg bg-muted/50 items-center p-6 ${className}`}
       {...props}
     >
       {children}
