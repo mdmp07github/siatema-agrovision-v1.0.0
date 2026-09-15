@@ -2,9 +2,9 @@
 
 import * as React from "react"
 
-import { NavMain } from "@/components/basic/interfaz/nav-main"
-import { NavProjects } from "@/components/basic/interfaz/nav-projects"
-import { NavUser } from "@/components/basic/interfaz/nav-user"
+/* import { NavMain } from "@/components/basic/interfaz/nav-main"
+import { NavProjects } from "@/components/basic/interfaz/nav-projects" */
+/* import { NavUser } from "@/components/basic/interfaz/nav-user" */
 import { TeamSwitcher } from "@/components/basic/interfaz/team-switcher"
 import {
   Sidebar,
@@ -13,7 +13,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/basic/interfaz/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react"
+import { GalleryVerticalEndIcon, TerminalSquareIcon, FrameIcon, PieChartIcon, MapIcon, FolderIcon, ArrowRightIcon, Trash2Icon } from "lucide-react"
+import { NavMenu } from "./nav-menu"
 
 // This is sample data.
 const data = {
@@ -50,21 +51,30 @@ const data = {
   ],
   navMain: [
     {
+      opc: "S",
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: (
+        <FrameIcon
+        />
+      ),
+    },
+    {
+      opc: "C",
       title: "Opciones",
       url: "#",
       icon: (
-        <TerminalSquareIcon
-        />
+        <TerminalSquareIcon />
       ),
       isActive: true,
       items: [
         {
-          title: "Dashboard",
-          url: "/dashboard",
-        },
-        {
           title: "GitHub",
           url: "/page-despliegue",
+        },
+        {
+          title: "Table",
+          url: "/page-table",
         },
         {
           title: "Card",
@@ -72,80 +82,41 @@ const data = {
         },
       ],
     },
-    /* {
-      title: "Models",
-      url: "#",
-      icon: (
-        <BotIcon
-        />
-      ),
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
     {
-      title: "Documentation",
+      opc: "L",
+      title: "Lista",
       url: "#",
       icon: (
-        <BookOpenIcon
-        />
+        <PieChartIcon />
       ),
       items: [
         {
-          title: "Introduction",
+          title: "Opción 1",
           url: "#",
+          icon: (
+            <FolderIcon />
+          ),
+          variant: "default" as const
         },
         {
-          title: "Get Started",
+          title: "Opción 2",
           url: "#",
+          icon: (
+            <ArrowRightIcon />
+          ), 
+          variant: "default" as const
         },
         {
-          title: "Tutorials",
+          separator: true,
+          title: "Eliminar",
           url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
+          icon: (
+            <Trash2Icon />
+          ),
+          variant: "destructive" as const
         },
       ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: (
-        <Settings2Icon
-        />
-      ),
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    }, */
+    }
   ],
   projects: [
     {
@@ -182,8 +153,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        {/* <NavProjects projects={data.projects} /> */}
+        <NavMenu items={data.navMain} />
+        {/* <NavMain items={data.navMain} />
+        <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter className="border border-b-olive-800 h-16.25 border-r-0 border-b-0 justify-center">
         {/* <NavUser user={data.user} /> */}

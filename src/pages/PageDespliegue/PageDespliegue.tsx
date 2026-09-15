@@ -357,7 +357,7 @@ function PageDespliegue() {
               <span className="text-neutral-700 dark:text-neutral-200 mr-2">Token</span>
             </div>
             <div className="flex gap-2">
-              <InputPassword form={form} placeholder="Ingrese Token" name="idInputTextToken" disable={rValueInhToken} ref={inputRefToken as React.RefObject<HTMLInputElement> | ((e: HTMLInputElement | null) => void) | null} />
+              <InputText form={form} placeholder="Ingrese Token" name="idInputTextToken" disable={rValueInhToken} ref={inputRefToken as React.RefObject<HTMLInputElement> | ((e: HTMLInputElement | null) => void) | null} />
             </div>
           </div>
         </CardLayoutBody>

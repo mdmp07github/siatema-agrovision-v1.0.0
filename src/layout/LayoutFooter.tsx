@@ -7,7 +7,7 @@ function LayoutFooter() {
         <span>Footer 1</span>
         <Separator
           orientation="vertical"
-          className="mr-2 data-[orientation=vertical]:h-4"
+          className="mx-1"
         />
         <span>Footer 2</span>
       </div>

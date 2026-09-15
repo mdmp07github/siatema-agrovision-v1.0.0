@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import LayoutSidebar from "./layout/LayoutSidebar";
 import PageDespliegue from "./pages/PageDespliegue/PageDespliegue";
 import PageCard from "./pages/PageCard/PageCard";
+import PageTable from "./pages/PageTable/PageTable";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/page-despliegue" element={<PageDespliegue />} />
+              <Route path="/page-table" element={<PageTable />} />
               <Route path="/page-card" element={<PageCard />} />
             </Route>
 
