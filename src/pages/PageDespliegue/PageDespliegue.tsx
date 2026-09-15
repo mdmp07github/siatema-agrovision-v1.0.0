@@ -18,10 +18,9 @@ import {
   TabsTrigger,
 } from "@/components/basic/componente/tabs"
 import InputText from "@/components/own/input/input-text"
-import InputPassword from "@/components/own/input/input-password"
 import { Button } from "@/components/basic/componente/button"
 import { useRef, useState } from "react"
-import { Switch } from "@/components/ui/switch"
+import { Switch } from "@/components/basic/componente/switch"
 import { Label } from "@/components/ui/label"
 import {
   ResizableHandle,
@@ -413,6 +412,7 @@ function PageDespliegue() {
                                     id="switch-mdk"
                                     checked={field.value}
                                     onCheckedChange={field.onChange}
+                                    variant={"yellow"}
                                   />
                                   <Label htmlFor="switch-mdk">Incluir</Label>
                                 </div>
@@ -463,6 +463,7 @@ function PageDespliegue() {
                                     id="switch-cap"
                                     checked={field.value}
                                     onCheckedChange={field.onChange}
+                                    variant={"yellow"}
                                   />
                                   <Label htmlFor="switch-cap">Incluir</Label>
                                 </div>
