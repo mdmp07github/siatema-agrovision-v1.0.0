@@ -116,7 +116,30 @@ const data = {
           variant: "destructive" as const
         },
       ],
-    }
+    },
+    {
+      opc: "C",
+      title: "Arreglos",
+      url: "#",
+      icon: (
+        <TerminalSquareIcon />
+      ),
+      isActive: true,
+      items: [
+        {
+          title: "Rama 1",
+          url: "#",
+        },
+        {
+          title: "Rama 2",
+          url: "#",
+        },
+        {
+          title: "Rama 3",
+          url: "#",
+        },
+      ],
+    },
   ],
   projects: [
     {
