@@ -55,9 +55,9 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
   }
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className="flex flex-col gap-1">
       <SidebarGroupLabel>Plataforma</SidebarGroupLabel>
-      <SidebarMenu>
+      <SidebarMenu className="flex flex-col gap-1">
         {items.map((item) => {
           const isItemActive = location.pathname === item.url
           const renderContent: Record<string, React.ReactNode> = {
@@ -105,7 +105,7 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton
                               asChild
-                              isActive={isSubActive} // 3. Activar el subítem seleccionado
+                              isActive={isSubActive}
                             >
                               <Link to={subItem.url}>
                                 <span>{subItem.title}</span>
