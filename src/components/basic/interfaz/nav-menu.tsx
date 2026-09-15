@@ -132,7 +132,7 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent className="overflow-hidden transition-all duration-300 data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-                    <SidebarMenuSub>
+                    <SidebarMenuSub className="mt-0.5">
                       {item.items?.map((subItem) => {
                         const isSubActive = location.pathname === subItem.url
                         return (
