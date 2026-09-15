@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useLocation, Link } from "react-router-dom"
 import {
   Collapsible,
   CollapsibleContent,
@@ -24,7 +25,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
-import { Link } from "react-router-dom"
 
 export interface NavSubItem {
   separator?: boolean
@@ -44,10 +44,11 @@ export interface NavMenuItem {
 }
 
 export function NavMenu({ items }: { items: NavMenuItem[] }) {
-  const { isMobile } = useSidebar()
 
-  /* const activeItem = items.find((item) => item.isActive && item.opc === "C")?.title */
-  const [openItem, setOpenItem] = useState<string | null>(/* activeItem ||  */null)
+  const { isMobile } = useSidebar()
+  const location = useLocation()
+
+  const [openItem, setOpenItem] = useState<string | null>(null)
 
   const handleSimpleLinkClick = () => {
     setOpenItem(null)
@@ -58,10 +59,15 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
       <SidebarGroupLabel>Plataforma</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
+          const isItemActive = location.pathname === item.url
           const renderContent: Record<string, React.ReactNode> = {
             S: (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild onClick={handleSimpleLinkClick}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isItemActive}
+                  onClick={handleSimpleLinkClick}
+                >
                   <Link to={item.url}>
                     {item.icon}
                     <span>{item.title}</span>
@@ -81,7 +87,11 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
+                    <SidebarMenuButton
+                      tooltip={item.title}
+                      // Opción alternativa: si quieres resaltar también el padre cuando un hijo está activo
+                      isActive={item.items?.some(sub => location.pathname === sub.url)}
+                    >
                       {item.icon}
                       <span>{item.title}</span>
                       <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -89,15 +99,21 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
                   </CollapsibleTrigger>
                   <CollapsibleContent className="overflow-hidden transition-all duration-300 data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                     <SidebarMenuSub>
-                      {item.items?.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <Link to={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
+                      {item.items?.map((subItem) => {
+                        const isSubActive = location.pathname === subItem.url
+                        return (
+                          <SidebarMenuSubItem key={subItem.title}>
+                            <SidebarMenuSubButton
+                              asChild
+                              isActive={isSubActive} // 3. Activar el subítem seleccionado
+                            >
+                              <Link to={subItem.url}>
+                                <span>{subItem.title}</span>
+                              </Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        )
+                      })}
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </SidebarMenuItem>
@@ -105,7 +121,11 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
             ),
             L: (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild onClick={handleSimpleLinkClick}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isItemActive}
+                  onClick={handleSimpleLinkClick}
+                >
                   <Link to={item.url}>
                     {item.icon}
                     <span>{item.title}</span>
