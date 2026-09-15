@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { useLocation, Link } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { useLocation, Link, useNavigate } from "react-router-dom"
 import {
   Collapsible,
   CollapsibleContent,
@@ -32,6 +32,7 @@ export interface NavSubItem {
   variant?: "default" | "destructive"
   title: string
   url: string
+  activeItem?: boolean
 }
 
 export interface NavMenuItem {
@@ -40,15 +41,49 @@ export interface NavMenuItem {
   url: string
   icon?: React.ReactNode
   isActive?: boolean
+  activeItem?: boolean
   items?: NavSubItem[]
 }
 
 export function NavMenu({ items }: { items: NavMenuItem[] }) {
-
   const { isMobile } = useSidebar()
   const location = useLocation()
+  const navigate = useNavigate()
 
   const [openItem, setOpenItem] = useState<string | null>(null)
+
+  // 1. Redirección automática si estamos en la raíz ("/") hacia el ítem con activeItem: true
+  useEffect(() => {
+    if (location.pathname === "/") {
+      let targetUrl: string | null = null
+
+      for (const item of items) {
+        if (item.activeItem) {
+          targetUrl = item.url
+          break
+        }
+        const activeSub = item.items?.find((sub) => sub.activeItem)
+        if (activeSub) {
+          targetUrl = activeSub.url
+          break
+        }
+      }
+
+      if (targetUrl) {
+        navigate(targetUrl, { replace: true })
+      }
+    }
+  }, [location.pathname, items, navigate])
+
+  // 2. Mantener abierto el Collapsible padre si una de sus sub-opciones es la ruta actual
+  useEffect(() => {
+    const activeParent = items.find(
+      (item) => item.opc === "C" && item.items?.some((sub) => sub.url === location.pathname)
+    )
+    if (activeParent) {
+      setOpenItem(activeParent.title)
+    }
+  }, [location.pathname, items])
 
   const handleSimpleLinkClick = () => {
     setOpenItem(null)
@@ -89,7 +124,6 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton
                       tooltip={item.title}
-                      // Opción alternativa: si quieres resaltar también el padre cuando un hijo está activo
                       isActive={item.items?.some(sub => location.pathname === sub.url)}
                     >
                       {item.icon}

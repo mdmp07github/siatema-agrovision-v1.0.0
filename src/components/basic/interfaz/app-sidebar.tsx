@@ -71,6 +71,7 @@ const data = {
         {
           title: "GitHub",
           url: "/page-despliegue",
+          activeItem: true,
         },
         {
           title: "Table",
@@ -132,7 +133,7 @@ const data = {
         },
         {
           title: "Rama 2",
-          url: "#",
+          url: "#"
         },
         {
           title: "Rama 3",
