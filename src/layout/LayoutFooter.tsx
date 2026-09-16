@@ -13,6 +13,8 @@ function LayoutFooter() {
     data.form1?.reset();
     data.form2?.reset();
     data.setValueTabDes?.("mdk");
+    data.setValueDisabled1?.(true);
+    data.setValueDisabled2?.(true);
   }
 
   return (

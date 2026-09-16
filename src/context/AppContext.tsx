@@ -36,6 +36,8 @@ export type AppData = {
   form1?: UseFormReturn<FormSchemaValues1>;
   form2?: UseFormReturn<FormSchemaValues2>;
   setValueTabDes?: (tab: string) => void;
+  setValueDisabled1?: (tab: boolean) => void;
+  setValueDisabled2?: (tab: boolean) => void;
 };
 
 type AppContextType = {

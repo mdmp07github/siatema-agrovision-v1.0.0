@@ -176,6 +176,8 @@ function PageDespliegue() {
   const [rValueForm, setValueForm] = useState<Partial<FormSchemaValues>>({});
   const [rValueForm1, setValueForm1] = useState<Partial<FormSchemaValues1>>({});
   const [rValueForm2, setValueForm2] = useState<Partial<FormSchemaValues2>>({});
+  const [rValueDisabled1, setValueDisabled1] = useState(true);
+  const [rValueDisabled2, setValueDisabled2] = useState(true);
 
   const formSchema = z.object({
     idInputIniciales: z.string().min(1, { message: "Debe ser obligatorio.", }),
@@ -242,6 +244,8 @@ function PageDespliegue() {
       form1,
       form2,
       setValueTabDes,
+      setValueDisabled1,
+      setValueDisabled2
     });
   }, []);
 
@@ -304,12 +308,14 @@ function PageDespliegue() {
 
     console.log("Datos2:", datosCompletos);
     setValueFecha(funFormatoFecha1(datosCompletos.idInputPickerFecha));
+    setValueDisabled1(false);
     setValueTabDes("resultado");
   };
 
   const fun_on_click_siguiente_3 = () => {
 
     setValueTabDes("correo");
+    setValueDisabled2(false);
   }
 
   const funCopiarUsuario = async () => {
@@ -391,13 +397,13 @@ function PageDespliegue() {
                 <span>CAP</span>
               </div>
             </TabsTrigger>
-            <TabsTrigger value="resultado">
+            <TabsTrigger value="resultado" disabled={rValueDisabled1}>
               <div className="flex items-center gap-1">
                 <Icons icon="simple-right-1" className="w-6" />
                 <span>Resultado</span>
               </div>
             </TabsTrigger>
-            <TabsTrigger value="correo">
+            <TabsTrigger value="correo" disabled={rValueDisabled2}>
               <div className="flex items-center gap-1">
                 <Icons icon="document1" className="w-6" />
                 <span>Correo</span>
@@ -526,40 +532,8 @@ function PageDespliegue() {
                   orientation="horizontal"
                   className="rounded-lg border w-full"
                 >
-                  {rValueForm1.idSwitchIncluir1 && (
-                    <>
-                      <ResizablePanel defaultSize="50%">
-                        <div className="flex h-full items-center p-6">
-                          <div >
-                            <p className="text-popover-foreground dark:text-neutral-100 underline text-2xl">MDK</p><br />
-                            <p>git add .</p>
-                            <p>git status –short</p>
-                            <p>git commit -m "{rValueForm.idInputIniciales}-{rValueFecha}-AJUSTES {funTipoDes1(rValueForm1.idInputSingleSelectProGit1 || "")} {rValueForm1.idInputTextDescripcion1} v{rValueForm1.idInputTextVersion1}"</p>
-                            <p>git push origin {rValueForm1.idInputSingleSelectRama1}</p><br />
-
-                            <p>git fetch origin –prune</p>
-                            <p>git switch develop</p>
-                            <p>git pull --ff-only origin develop</p>
-                            <p>git log --oneline develop..origin/{rValueForm1.idInputSingleSelectRama1}</p>
-                            <p>git merge --no-ff origin/{rValueForm1.idInputSingleSelectRama1} -m "Integración develop - {rValueForm.idInputIniciales} {rValueFecha} AJUSTES {funTipoDes1(rValueForm1.idInputSingleSelectProGit1 || "")} {rValueForm1.idInputTextDescripcion1} v{rValueForm1.idInputTextVersion1}"</p>
-                            <p>git push origin develop</p><br />
-
-                            <p>git fetch origin</p>
-                            <p>git switch {rValueForm1.idInputSingleSelectRama1}</p>
-                            <p>git pull --ff-only origin {rValueForm1.idInputSingleSelectRama1}</p>
-                            <p>git status –short</p>
-                            <p>git switch -c release/v{rValueForm1.idInputTextVersion1}_{rValueForm.idInputIniciales}_{rValueFecha}_MDK_{funTipoDes1(rValueForm1.idInputSingleSelectProGit1 || "")}_{rValueForm1.idInputTextDescripcion1?.replaceAll(" ", "_").toUpperCase()}</p>
-                            <p>git push -u origin release/v{rValueForm1.idInputTextVersion1}_{rValueForm.idInputIniciales}_{rValueFecha}_MDK_{funTipoDes1(rValueForm1.idInputSingleSelectProGit1 || "")}_{rValueForm1.idInputTextDescripcion1?.replaceAll(" ", "_").toUpperCase()}</p><br />
-
-                            <p>git switch {rValueForm1.idInputSingleSelectRama1}</p>
-                          </div>
-                        </div>
-                      </ResizablePanel>
-                    </>
-                  )}
                   {rValueForm2.idSwitchIncluir2 && (
                     <>
-                      <ResizableHandle withHandle />
                       <ResizablePanel defaultSize="50%">
                         <div className="flex h-full items-center p-6">
                           <div >
@@ -584,6 +558,38 @@ function PageDespliegue() {
                             <p>git push -u origin release/v{rValueForm2.idInputTextVersion2}_{rValueForm.idInputIniciales}_{rValueFecha}_CAP_{funTipoDes2(rValueForm2.idInputSingleSelectProGit2 || "")}_{rValueForm2.idInputTextDescripcion2?.replaceAll(" ", "_").toUpperCase()}</p><br />
 
                             <p>git switch {rValueForm2.idInputSingleSelectRama2}</p>
+                          </div>
+                        </div>
+                      </ResizablePanel>
+                    </>
+                  )}
+                  {rValueForm1.idSwitchIncluir1 && (
+                    <>
+                      <ResizableHandle withHandle />
+                      <ResizablePanel defaultSize="50%">
+                        <div className="flex h-full items-center p-6">
+                          <div >
+                            <p className="text-popover-foreground dark:text-neutral-100 underline text-2xl">MDK</p><br />
+                            <p>git add .</p>
+                            <p>git status –short</p>
+                            <p>git commit -m "{rValueForm.idInputIniciales}-{rValueFecha}-AJUSTES {funTipoDes1(rValueForm1.idInputSingleSelectProGit1 || "")} {rValueForm1.idInputTextDescripcion1} v{rValueForm1.idInputTextVersion1}"</p>
+                            <p>git push origin {rValueForm1.idInputSingleSelectRama1}</p><br />
+
+                            <p>git fetch origin –prune</p>
+                            <p>git switch develop</p>
+                            <p>git pull --ff-only origin develop</p>
+                            <p>git log --oneline develop..origin/{rValueForm1.idInputSingleSelectRama1}</p>
+                            <p>git merge --no-ff origin/{rValueForm1.idInputSingleSelectRama1} -m "Integración develop - {rValueForm.idInputIniciales} {rValueFecha} AJUSTES {funTipoDes1(rValueForm1.idInputSingleSelectProGit1 || "")} {rValueForm1.idInputTextDescripcion1} v{rValueForm1.idInputTextVersion1}"</p>
+                            <p>git push origin develop</p><br />
+
+                            <p>git fetch origin</p>
+                            <p>git switch {rValueForm1.idInputSingleSelectRama1}</p>
+                            <p>git pull --ff-only origin {rValueForm1.idInputSingleSelectRama1}</p>
+                            <p>git status –short</p>
+                            <p>git switch -c release/v{rValueForm1.idInputTextVersion1}_{rValueForm.idInputIniciales}_{rValueFecha}_MDK_{funTipoDes1(rValueForm1.idInputSingleSelectProGit1 || "")}_{rValueForm1.idInputTextDescripcion1?.replaceAll(" ", "_").toUpperCase()}</p>
+                            <p>git push -u origin release/v{rValueForm1.idInputTextVersion1}_{rValueForm.idInputIniciales}_{rValueFecha}_MDK_{funTipoDes1(rValueForm1.idInputSingleSelectProGit1 || "")}_{rValueForm1.idInputTextDescripcion1?.replaceAll(" ", "_").toUpperCase()}</p><br />
+
+                            <p>git switch {rValueForm1.idInputSingleSelectRama1}</p>
                           </div>
                         </div>
                       </ResizablePanel>
