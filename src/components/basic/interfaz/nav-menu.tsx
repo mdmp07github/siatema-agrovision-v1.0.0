@@ -100,6 +100,7 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   asChild
+                  tooltip={item.title}
                   isActive={isItemActive}
                   onClick={handleSimpleLinkClick}
                 >
@@ -157,6 +158,7 @@ export function NavMenu({ items }: { items: NavMenuItem[] }) {
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   asChild
+                  tooltip={item.title}
                   isActive={isItemActive}
                   onClick={handleSimpleLinkClick}
                 >

@@ -1,3 +1,5 @@
+/* import dotenv from 'dotenv';
+dotenv.config(); */
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -19,7 +21,7 @@ import {
 } from "@/components/basic/componente/tabs"
 import InputText from "@/components/own/input/input-text"
 import { Button } from "@/components/basic/componente/button"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Switch } from "@/components/basic/componente/switch"
 import { Label } from "@/components/ui/label"
 import {
@@ -28,6 +30,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import { CardLayout, CardLayoutBody, CardLayoutHeader } from "@/components/basic/componente/card-layout"
+import { useAppContext } from "@/context/AppContext"
 
 /* const oInfo = [{
   info: "Info 1"
@@ -160,6 +163,7 @@ const gDatosProGits2 = [
 
 function PageDespliegue() {
 
+  const { setData } = useAppContext();
   const [rValueTabDes, setValueTabDes] = useState("mdk");
   const [rValueFecha, setValueFecha] = useState("");
   const [rValueInhUsu, setValueInhUsu] = useState(true);
@@ -203,8 +207,8 @@ function PageDespliegue() {
     defaultValues: {
       idInputIniciales: "MM",
       idInputPickerFecha: new Date(),
-      idInputTextUsuario: "x-token-auth",
-      idInputTextToken: "ATATT3xFfGF065q5PsiMADsYeGhkkvMGe6wjXn9ybqwFYCGOsVwhf7T2NJ0z_Z36XSVS1VM2gOiFothjzZFyuvXW_H7tWEcgMuQotyJn9Wti-uz1X_gkAPJp8U36cj625AXSHqLoEIfG1UUqeW1Bx6YXmiFG4Vkn0069Jwq3fU8uKA8MtRAcPN0=4D90C6B9",
+      idInputTextUsuario: import.meta.env.VITE_GIT_USU ?? "",
+      idInputTextToken: import.meta.env.VITE_GIT_PWD ?? "",
     },
   })
 
@@ -231,6 +235,15 @@ function PageDespliegue() {
       idInputTextDescripcion2: "",
     },
   })
+
+  useEffect(() => {
+    setData({
+      form,
+      form1,
+      form2,
+      setValueTabDes,
+    });
+  }, []);
 
   // 1. Modificación de la función para el Formulario 1 (MDK)
   type DatosPaso1 = z.infer<typeof formSchema> & z.infer<typeof formSchema1>;
@@ -330,10 +343,10 @@ function PageDespliegue() {
           <div className="flex-col gap-2 w-1/4">
             <div className="flex gap-2 pb-2 w-full text-muted-foreground justify-between items-center">
               <div className="flex gap-2">
-                <Button type="submit" size="icon" variant="orange" tooltip="Copiar" onClick={() => funCopiarUsuario()}>
+                <Button type="submit" size="icon" variant="purple" tooltip="Copiar" onClick={() => funCopiarUsuario()}>
                   <Icons icon="document1" />
                 </Button>
-                <Button type="submit" size="icon" variant="blue" tooltip="Editar" onClick={() => setValueInhUsu(!rValueInhUsu)}>
+                <Button type="submit" size="icon" variant="yellow" tooltip="Editar" onClick={() => setValueInhUsu(!rValueInhUsu)}>
                   <Icons icon="edit" />
                 </Button>
               </div>
@@ -346,10 +359,10 @@ function PageDespliegue() {
           <div className="flex-col gap-2 w-3/4">
             <div className="flex gap-2 pb-2 w-full text-muted-foreground justify-between items-center">
               <div className="flex gap-2">
-                <Button type="submit" size="icon" variant="orange" tooltip="Copiar" onClick={() => funCopiarToken()}>
+                <Button type="submit" size="icon" variant="purple" tooltip="Copiar" onClick={() => funCopiarToken()}>
                   <Icons icon="document1" />
                 </Button>
-                <Button type="submit" size="icon" variant="blue" tooltip="Editar" onClick={() => setValueInhToken(!rValueInhToken)}>
+                <Button type="submit" size="icon" variant="yellow" tooltip="Editar" onClick={() => setValueInhToken(!rValueInhToken)}>
                   <Icons icon="edit" />
                 </Button>
               </div>
