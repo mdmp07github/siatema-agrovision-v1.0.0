@@ -13,7 +13,7 @@ const stepsList: Step[] = [
 
 function PageTable() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [maxStepReached, setMaxStepReached] = useState(0); // Mantiene el registro del nivel máximo alcanzado
+  const [maxStepReached, setMaxStepReached] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
   const handleNext = () => {
@@ -30,13 +30,16 @@ function PageTable() {
     if (isFinished) {
       setIsFinished(false);
     } else if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1);
+      const prevStep = currentStep - 1;
+      setCurrentStep(prevStep);
+      setMaxStepReached(prevStep); // Al ir hacia atrás con el botón, también reseteamos el alcance
     }
   };
 
   const handleStepClick = (stepIndex: number) => {
     setIsFinished(false);
     setCurrentStep(stepIndex);
+    setMaxStepReached(stepIndex); // Actualiza el máximo alcanzado al paso seleccionado
   };
 
   return (
@@ -54,7 +57,7 @@ function PageTable() {
             <Stepper
               steps={stepsList}
               currentStep={currentStep}
-              maxStepReached={maxStepReached} // Pasamos la nueva propiedad
+              maxStepReached={maxStepReached}
               isCompletedAll={isFinished}
               onStepClick={handleStepClick}
             />

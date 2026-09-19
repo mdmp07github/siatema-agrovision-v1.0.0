@@ -30,46 +30,36 @@ export function Stepper({
         {steps.map((step, index) => {
           const isCurrent = index === currentStep && !isCompletedAll;
 
-          // Pasos anteriores al máximo alcanzado ya están completados (deben llevar Check)
-          const isCompleted = index < maxStepReached || isCompletedAll;
+          // Pasos estrictamente anteriores al máximo alcanzado están completados
+          const isCompleted = isCompletedAll || index < maxStepReached;
 
-          // Solo el paso más avanzado en progreso lleva el lápiz
-          const isPencil = index === maxStepReached && !isCompletedAll;
+          // El paso máximo alcanzado en progreso lleva el lápiz
+          const isPencil = !isCompletedAll && index === maxStepReached;
 
-          // Permite hacer clic en cualquier paso ya alcanzado
-          const isClickable = onStepClick && (index <= maxStepReached || isCompletedAll);
+          // Solo se puede hacer clic si se ha alcanzado el paso o si están todos completados
+          const isClickable = Boolean(onStepClick) && (index <= maxStepReached || isCompletedAll);
 
           const handleClick = () => {
-            if (isClickable) {
+            if (isClickable && onStepClick) {
               onStepClick(index);
             }
           };
 
           return (
             <React.Fragment key={index}>
-              {/* Contenedor del paso */}
               <div
                 onClick={handleClick}
                 className={cn(
                   "flex items-center gap-3",
-                  isClickable ? "cursor-pointer select-none" : "cursor-default"
+                  isClickable ? "cursor-pointer select-none" : "cursor-not-allowed opacity-50"
                 )}
               >
-                {/* Ícono del paso */}
                 <div
                   className={cn(
                     "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all duration-200",
-                    // Estilos para pasos completados (Check)
-                    isCompleted && !isCurrent && "border-primary bg-primary text-primary-foreground",
-                    isCompleted && isCurrent && "border-primary bg-primary text-primary-foreground ring-4 ring-primary/20",
-
-                    // Estilos para el paso en progreso (Lápiz)
-                    isPencil && isCurrent && "border-primary text-primary ring-4 ring-primary/20",
-                    isPencil && !isCurrent && "border-primary text-primary",
-
-                    // Estilos para pasos bloqueados (Número)
+                    isCompleted && "border-primary bg-primary text-primary-foreground",
+                    isPencil && "border-primary text-primary ring-4 ring-primary/20",
                     !isCompleted && !isPencil && "border-muted-foreground/30 text-muted-foreground",
-
                     isClickable && "hover:opacity-80"
                   )}
                 >
@@ -82,7 +72,6 @@ export function Stepper({
                   )}
                 </div>
 
-                {/* Texto del paso */}
                 <div className="hidden sm:block">
                   <p
                     className={cn(
@@ -102,12 +91,11 @@ export function Stepper({
                 </div>
               </div>
 
-              {/* Línea divisora */}
               {index < steps.length - 1 && (
                 <div
                   className={cn(
                     "h-0.5 flex-1 mx-2 transition-colors duration-200",
-                    index < maxStepReached || isCompletedAll ? "bg-primary" : "bg-muted-foreground/20"
+                    isCompletedAll || index < maxStepReached ? "bg-primary" : "bg-muted-foreground/20"
                   )}
                 />
               )}
